@@ -6,7 +6,7 @@
  * Time: 10:52
  */
 
-namespace FPopov\Adapter;
+namespace Georgi\Adapter;
 
 
 interface DatabaseStatementInterface

@@ -1,5 +1,5 @@
 <?php
-namespace FPopov\Adapter;
+namespace Georgi\Adapter;
 
 class Database implements DatabaseInterface
 {
