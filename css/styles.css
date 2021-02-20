@@ -1,0 +1,100 @@
+@import url('https://use.fontawesome.com/releases/v5.3.1/css/all.css');
+@import url('reset.css');
+@import url('typography.css');
+
+body {
+    background: #EEE;
+    padding: 2rem;
+}
+
+body > header:first-of-type {
+    border-bottom: 2px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+
+header .site-title {
+    min-width: 20vw;
+    font-weight: bold;
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+header nav ul {
+    display: flex;
+}
+
+header nav ul li {
+    display: block;
+    padding: 0 0.25rem;
+}
+
+header nav ul li a {
+    display: block;
+    padding: 0.5em 1rem;
+    text-decoration: none;
+    color: #090;
+    border-radius: 0.2rem;
+}
+
+header nav ul li a:focus,
+header nav ul li a:hover {
+    outline: none;
+    background: #090;
+    color: #FFF;
+}
+
+/*message*/
+body .container {
+    margin: 3rem 0;
+}
+
+body .container {
+    margin: 3rem 0;
+}
+
+body .container .alert-danger {
+    color: red;
+}
+
+body .container .alert-success{
+    color: green;
+}
+
+
+@media screen and (max-width: 800px){
+    table thead {
+        display: none;
+    }
+
+    table,
+    table tbody,
+    table tr, table td{
+        display: block;
+    }
+
+    table tr {
+        border: 2px solid black;
+    }
+
+    table tbody td:before {
+        display: inline-block;
+        width: 8rem;
+        font-weight: bold;
+        text-align: right;
+        padding-right: 1rem;
+        white-space: nowrap;
+    }
+
+    table tbody td:nth-child(1):before {
+        content: attr(data-label);
+    }
+
+    table tbody td:nth-child(2):before {
+        content: attr(data-label);
+    }
+
+    table tbody td:nth-child(3):before {
+        content: attr(data-label);
+    }
+}

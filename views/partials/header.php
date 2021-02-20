@@ -1,6 +1,7 @@
 <?php
 /** @var \Georgi\Core\ViewInterface $this */ ;
 $uriJunk = isset($uriJunk) ? $uriJunk : '';
+
 ?>
 
 <!DOCTYPE html>
@@ -13,24 +14,25 @@ $uriJunk = isset($uriJunk) ? $uriJunk : '';
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description"/>
     <meta content="" name="author"/>
+    
+    <link rel="stylesheet" type="text/css" href="<?= $uriJunk?>css/styles.css">
+    <link rel="stylesheet" type="text/css" href="<?= $uriJunk?>css/forms.css">
+    
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Midgard</a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a target="_blank" href="https://github.com/filippopov/Midgard">GitHub</a></li>
+    <header>
+        <p class="site-title">
+            <a href="<?php echo $this->uri('users', 'profile') ?>">Georgi Project</a>
+        </p>
+        <nav>
+            <ul>
+                <?php if ($this->authenticationService->isAuthenticated()): ?>
+                    <li><a href="<?php echo $this->uri('users', 'profile') ?>">Home</a></li>
+                    <li><a href="<?php echo $this->uri('users', 'logout') ?>">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="<?php echo $this->uri('users', 'login') ?>">Login</a></li>
+                    <li><a href="<?php echo $this->uri('users', 'registration') ?>">Register</a></li>
+                <?php endif; ?>
             </ul>
-        </div>
-    </div>
-</nav>
+        </nav>
+    </header>

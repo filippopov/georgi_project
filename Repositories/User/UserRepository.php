@@ -31,4 +31,44 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             'primaryKeyName' => 'id'
         ];
     }
+    
+    public function getUserWithRole($params = [])
+    {
+        $query = "
+            SELECT 
+                u.id,
+                u.username,
+                u.role_id,
+                r.name AS role_name
+            FROM users AS u
+            INNER JOIN roles AS r ON (r.id = u.role_id)
+            WHERE u.id = :userId;
+            LIMIT 1
+        ";
+        
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute($params);
+
+        return $stmt->fetch();
+    }
+
+    public function getUserByRole($params = [])
+    {
+        $query = "
+            SELECT 
+                u.id,
+                u.username,
+                r.name AS role_name
+            FROM users AS u 
+            INNER JOIN roles AS r ON (r.id = u.role_id)
+            WHERE r.id = :roleId;
+        ";
+        
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute($params);
+
+        return $stmt->fetchAll();
+    }
 }

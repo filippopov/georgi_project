@@ -1,6 +1,6 @@
 <?php
-const DEFAULT_CONTROLLER = 'default';
-const DEFAULT_ACTION = 'defaultAction';
+const DEFAULT_CONTROLLER = 'users';
+const DEFAULT_ACTION = 'login';
 
 include 'autoloader.php';
 include 'helper.php';
@@ -87,5 +87,9 @@ $app->registerDependency(\Georgi\Services\Application\ResponseServiceInterface::
 $app->registerDependency(\Georgi\Repositories\User\UserRepositoryInterface::class, \Georgi\Repositories\User\UserRepository::class);
 $app->registerDependency(\Georgi\Repositories\Role\RoleRepositoryInterface::class, \Georgi\Repositories\Role\RoleRepository::class);
 $app->registerDependency(\Georgi\Repositories\UserRole\UserRoleRepositoryInterface::class, \Georgi\Repositories\UserRole\UserRoleRepository::class);
+$app->registerDependency(\Georgi\Repositories\Token\BusinessTokenInterface::class, \Georgi\Repositories\Token\BusinessToken::class);
+$app->registerDependency(\Georgi\Services\Token\BusinessTokenServiceInterface::class, \Georgi\Services\Token\BusinessTokenService::class);
+$app->registerDependency(\Georgi\Repositories\Coment\ComentsInterface::class, \Georgi\Repositories\Coment\Coments::class);
+$app->registerDependency(\Georgi\Services\Coment\ComentsServiceInterface::class, \Georgi\Services\Coment\ComentsService::class);
 
 $app->start();

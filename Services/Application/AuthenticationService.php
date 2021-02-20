@@ -62,7 +62,7 @@ class AuthenticationService extends AbstractService implements AuthenticationSer
 
         $hash = $user[0]->getPassword();
 
-        if ($this->encryptionService->verify($password, $hash) && $user[0]->getIsActive() == UserService::IS_ACTIVE) {
+        if ($this->encryptionService->verify($password, $hash)) {
             $this->session->set('id', $user[0]->getId());
             return true;
         }

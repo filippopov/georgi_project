@@ -23,12 +23,10 @@ use Georgi\Repositories\UserRole\UserRoleRepository;
 use Georgi\Repositories\UserRole\UserRoleRepositoryInterface;
 use Georgi\Services\AbstractService;
 use Georgi\Services\Application\EncryptionServiceInterface;
+use Georgi\Core\MVC\SessionInterface;
 
 class UserService extends AbstractService  implements UserServiceInterface
 {
-    const IS_ACTIVE = 1;
-    const USER_ROLE = 'user';
-
     private $db;
     private $encryptionService;
     private $view;
@@ -40,6 +38,8 @@ class UserService extends AbstractService  implements UserServiceInterface
     private $roleRepository;
     /** @var  UserRoleRepository */
     private $userRoleRepository;
+    
+    private $session;
 
     public function __construct(
         DatabaseInterface $db,
@@ -47,7 +47,8 @@ class UserService extends AbstractService  implements UserServiceInterface
         UserRepositoryInterface $userRepository,
         RoleRepositoryInterface $roleRepository,
         UserRoleRepositoryInterface $userRoleRepository,
-        ViewInterface $view)
+        ViewInterface $view,
+        SessionInterface $session)
     {
         $this->db = $db;
         $this->encryptionService = $encryptionService;
@@ -55,9 +56,10 @@ class UserService extends AbstractService  implements UserServiceInterface
         $this->roleRepository = $roleRepository;
         $this->userRoleRepository = $userRoleRepository;
         $this->view = $view;
+        $this->session = $session;
     }
 
-    public function register($username, $password) : bool
+    public function register($username, $password, $role_id) : bool
     {
         if (strlen($username) < 5) {
             Message::postMessage('Username must be, at least five or more symbols', Message::NEGATIVE_MESSAGE);
@@ -75,31 +77,40 @@ class UserService extends AbstractService  implements UserServiceInterface
             Message::postMessage('Username exist', Message::NEGATIVE_MESSAGE);
             return false;
         }
+        
+        /** @var Role[] $role */
+        $role = $this->roleRepository->findByCondition(['id' => $role_id], Role::class);
+        
+        if (empty($role)){
+            Message::postMessage('Role cannot be found!', Message::NEGATIVE_MESSAGE);
+            return false;
+        }
 
         $userRegister = $this->userRepository->create([
             'username' => $username,
             'password' => $this->encryptionService->hash($password),
-            'is_active' => self::IS_ACTIVE
+            'role_id' => $role_id
         ]);
-
-        /** @var User[] $user */
-        $user = $this->userRepository->findByCondition(['username' => $username], User::class);
-
-        /** @var Role[] $role */
-        $role = $this->roleRepository->findByCondition(['name' => self::USER_ROLE], Role::class);
-
-        $userRole = $this->userRoleRepository->create([
-            'user_id' => $user[0]->getId(),
-            'role_id' => $role[0]->getId()
-        ]);
-
-        if ($userRegister && $userRole) {
-            Message::postMessage('Successfully register user', Message::POSITIVE_MESSAGE);
-        } else {
+        
+        if (!$userRegister) {
             Message::postMessage('Please try again', Message::NEGATIVE_MESSAGE);
+            $this->session->set('id', $user[0]->getId());
             return false;
         }
-
+        
+        $user = $this->userRepository->findByCondition(['username' => $username]);
+        
+        if (empty($user)) {
+            Message::postMessage('User cannot be found', Message::NEGATIVE_MESSAGE);
+            return false;
+        }
+        
+        $user = isset($user[0]) ? $user[0] : array();
+        $user_id = isset($user['id']) ? $user['id'] : 0;
+        $this->session->set('id', $user_id);
+        
+        Message::postMessage('Successfully register user', Message::POSITIVE_MESSAGE);
+        
         return true;
     }
 
@@ -125,5 +136,22 @@ class UserService extends AbstractService  implements UserServiceInterface
         ];
 
         return $this->userRepository->update($bindingModel->getId(), $params);
+    }
+    
+    public function findUserRoles()
+    {
+        $roles = $this->roleRepository->findAll(Role::class);
+        
+        return $roles;
+    }
+    
+    public function getUserWithRole($userId)
+    {
+        return $this->userRepository->getUserWithRole([':userId' => $userId]);
+    }
+    
+    public function getUserByRole($lookingForRole)
+    {
+        return $this->userRepository->getUserByRole([':roleId' => $lookingForRole]);
     }
 }
