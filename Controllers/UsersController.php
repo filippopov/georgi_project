@@ -114,12 +114,15 @@ class UsersController
         $userRole = isset($user['role_name']) ? $user['role_name'] : '';
         
         $lookingForRole = '';
+        $comments = array();
         switch ($userRole){
             case 'business':
                 $lookingForRole = self::CLIENT_ROLE_ID;
+                $comments = $this->service->getForYouComments($userId);
                 break;
             case 'client':
                 $lookingForRole = self::BUSINESS_ROLE_ID;
+                $comments = $this->service->getYourComments($userId);
                 break;
         }
         
@@ -129,6 +132,7 @@ class UsersController
         $userProfileViewModel->setMyUsername($username);
         $userProfileViewModel->setOtherUsers($getAllUsers);
         $userProfileViewModel->setRole($userRole);
+        $userProfileViewModel->setComments($comments);
 
         $this->view->render(['model' => $userProfileViewModel]);
     }

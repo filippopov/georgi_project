@@ -4,7 +4,7 @@ namespace Georgi\Services\Coment;
 
 interface ComentsServiceInterface 
 {
-    public function createComent($buisnesId, $clientId);
+    public function addComment($rating, $token, $buisnesId, $clientId);
 
     public function showComents($buisnesId, $clientId);
 }

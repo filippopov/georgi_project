@@ -24,6 +24,7 @@ use Georgi\Repositories\UserRole\UserRoleRepositoryInterface;
 use Georgi\Services\AbstractService;
 use Georgi\Services\Application\EncryptionServiceInterface;
 use Georgi\Core\MVC\SessionInterface;
+use Georgi\Repositories\Coment\ComentsInterface;
 
 class UserService extends AbstractService  implements UserServiceInterface
 {
@@ -40,6 +41,12 @@ class UserService extends AbstractService  implements UserServiceInterface
     private $userRoleRepository;
     
     private $session;
+    
+    /**
+     *
+     * @var ComentsInterface
+     */
+    private $commentRepository;
 
     public function __construct(
         DatabaseInterface $db,
@@ -48,7 +55,8 @@ class UserService extends AbstractService  implements UserServiceInterface
         RoleRepositoryInterface $roleRepository,
         UserRoleRepositoryInterface $userRoleRepository,
         ViewInterface $view,
-        SessionInterface $session)
+        SessionInterface $session,
+        ComentsInterface $commentRepository)
     {
         $this->db = $db;
         $this->encryptionService = $encryptionService;
@@ -57,6 +65,7 @@ class UserService extends AbstractService  implements UserServiceInterface
         $this->userRoleRepository = $userRoleRepository;
         $this->view = $view;
         $this->session = $session;
+        $this->commentRepository = $commentRepository; 
     }
 
     public function register($username, $password, $role_id) : bool
@@ -153,5 +162,15 @@ class UserService extends AbstractService  implements UserServiceInterface
     public function getUserByRole($lookingForRole)
     {
         return $this->userRepository->getUserByRole([':roleId' => $lookingForRole]);
+    }
+    
+    public function getYourComments($userId)
+    {
+        return $this->commentRepository->getComentsByClientId([':clientId' => $userId]);
+    }
+    
+    public function getForYouComments($userId)
+    {
+        return $this->commentRepository->getComentsByBuisnesId([':buisnesId' => $userId]);
     }
 }

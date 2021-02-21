@@ -17,6 +17,9 @@ class UserProfileViewModel
     
     private $role; 
     
+    private $comments;
+
+
     public function setMyUsername($username)
     {
         $this->myUsername = $username;
@@ -45,5 +48,15 @@ class UserProfileViewModel
     public function getRole()
     {
         return $this->role;
+    }
+    
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+    
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

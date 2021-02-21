@@ -1,4 +1,4 @@
-<form action="<?php echo $this->uri('token', 'generateTokenPost') ?>" method="post">
+<form action="<?php echo $this->uri('coments', 'comentPost') ?>" method="post">
     <fieldset>
         <legend>Rating</legend>
         <p class="field">
@@ -23,7 +23,7 @@
             </span>
         </p>
         
-        <input type="hidden" name="buisnesId" value="">
+        <input type="hidden" name="buisnesId" value="<?= $model->getBuisnesId() ?>">
         <input type="submit" value="Rating">
     </fieldset>
 </form>

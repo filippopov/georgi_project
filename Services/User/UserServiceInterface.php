@@ -24,5 +24,9 @@ interface UserServiceInterface
     
     public function getUserWithRole($userId);
     
-    public function getUserByRole($roleId)
-;}
+    public function getUserByRole($roleId);
+            
+    public function getYourComments($userId);
+    
+    public function getForYouComments($userId);
+}
