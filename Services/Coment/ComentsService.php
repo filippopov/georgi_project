@@ -80,9 +80,4 @@ class ComentsService extends AbstractService  implements ComentsServiceInterface
         
         Message::postMessage('Successfully create comment!', Message::POSITIVE_MESSAGE);
     }
-    
-    public function showComents($buisnesId, $clientId)
-    {
-        
-    }
 }
